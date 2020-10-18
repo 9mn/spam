@@ -1,37 +1,42 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/9mn/spam/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/9mn/spam/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+import requests,uuid,secrets
+from time import sleep
+uid = uuid.uuid4()
+r = requests.Session()
+cookie = secrets.token_hex(8)*2
+print("free Sn: C3r3r 
+iG:hosseen ")
+username = input('your user:')
+password = input('your password:')
+target = input('target:')
+sle = int(input('sleep:'))
+def login():
+    global username
+    global password
+    url = 'https://www.instagram.com/accounts/login/ajax/'
+    headers = {"user-agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36', 'x-csrftoken': 'missing', 'mid': cookie}
+    data = {'username':username,
+            'enc_password': '#PWD_INSTAGRAM_BROWSER:0:1589682409:{}'.format(password),
+            'queryParams': '{}',
+            'optIntoOneTap': 'false',}
+    req_login = r.post(url,headers=headers,data=data)
+    if ("userId") in req_login.text:
+        r.headers.update({'X-CSRFToken': req_login.cookies['csrftoken']})
+        print('login True')
+        url_id = 'https://www.instagram.com/{}/?__a=1'.format(target)
+        req_id = r.get(url_id).json()
+        user_id = str(req_id['logging_page_id'])
+        idd = user_id.split('_')[1]
+        done = 1
+        while True:
+            url_report = 'https://www.instagram.com/users/{}/report/'.format(idd)
+            datas = {'source_name':'','reason_id':1,'frx_context':''} #spam
+            report = r.post(url_report,data=datas)
+            print('done spam {}'.format(done))
+            sleep(sle)
+            done += 1
+    else:
+        print('login false')
+        exit()
+ 
+login()
+ 
